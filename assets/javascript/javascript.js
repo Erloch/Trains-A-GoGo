@@ -1,14 +1,14 @@
 var firebaseConfig = {
-    apiKey: "AIzaSyCpdHwnc7uJ6Yrm0tRnRnFWkDKcBXXhwYs",
-    authDomain: "bootcamp-5cfa8.firebaseapp.com",
-    databaseURL: "https://bootcamp-5cfa8.firebaseio.com",
-    projectId: "bootcamp-5cfa8",
-    storageBucket: "bootcamp-5cfa8.appspot.com",
-    messagingSenderId: "963095541257",
-    appId: "1:963095541257:web:aa9bd8ba82ac0d7b"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  apiKey: "AIzaSyCpdHwnc7uJ6Yrm0tRnRnFWkDKcBXXhwYs",
+  authDomain: "bootcamp-5cfa8.firebaseapp.com",
+  databaseURL: "https://bootcamp-5cfa8.firebaseio.com",
+  projectId: "bootcamp-5cfa8",
+  storageBucket: "bootcamp-5cfa8.appspot.com",
+  messagingSenderId: "963095541257",
+  appId: "1:963095541257:web:aa9bd8ba82ac0d7b"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
 
@@ -18,7 +18,8 @@ $("#add-train-btn").on("click", function(event) {
     // Grabs user input
     var trainName = $("#train-name-input").val().trim();
     var destination = $("#destination-input").val().trim();
-    var firstTrain = moment($("#firstTrain-input").val().trim(), "00:00").format("hh:mm");
+    var firstTrain = $("#firstTrain-input").val().trim();
+    console.log(firstTrain)
     var frequency = $("#frequency-input").val().trim();
 
     var newTrain = {
@@ -32,7 +33,7 @@ $("#add-train-btn").on("click", function(event) {
       // Logs everything to console
       console.log(newTrain.name);
       console.log(newTrain.destination);
-      console.log(newTrain.firstTrain);
+      console.log(newTrain.firstTrainTime);
       console.log(newTrain.frequency);
     
       alert("Train successfully added");
@@ -49,27 +50,27 @@ $("#add-train-btn").on("click", function(event) {
         console.log(childSnapshot.val());
       
         // Store everything into a variable.
-        var trainName = childSnapshot.val().name;
-        var destination = childSnapshot.val().destination;
-        var firstTrain = childSnapshot.val().firstTrain;
-        var frequency = childSnapshot.val().frequency;
+        var tName = childSnapshot.val().name;
+        var tDestination = childSnapshot.val().destination;
+        var tFirstTrain = childSnapshot.val().firstTrainTime;
+        var tFrequency = childSnapshot.val().frequency;
       
         // train Info
-        console.log(trainName);
-        console.log(destination);
-        console.log(firstTrain);
-        console.log(frequency);
+        console.log(tName);
+        console.log(tDestination);
+        console.log(tFirstTrain);
+        console.log(tFrequency);
       
      //========================================
-     var firstTime = moment($("#firstTrain-input").val().trim(), "00:00").format("hh:mm");
-     var tFrequency = $("#frequency-input").val().trim();
+  //    var formatFirstTime = moment(tFirstTrain).format("HH:mm");
+  // console.log(formatFirstTime)
       // First Time (pushed back 1 year to make sure it comes before current time)
-      var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "days");
+      var firstTimeConverted = moment(tFirstTrain, "HH:mm").subtract(1, "days");
       console.log(firstTimeConverted);
   
       // Current Time
       var currentTime = moment();
-      console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+      console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
   
       // Difference between the times
       var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
@@ -85,16 +86,16 @@ $("#add-train-btn").on("click", function(event) {
   
       // Next Train
       var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-      console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+      console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
         
      //================================================ 
     
         // Create the new row
         var newRow = $("<tr>").append(
-          $("<td>").text(trainName),
-          $("<td>").text(destination),
-          $("<td>").text(frequency),
-          $("<td>").text(nextTrain),
+          $("<td>").text(tName),
+          $("<td>").text(tDestination),
+          $("<td>").text(tFrequency),
+          $("<td>").text(moment(nextTrain).format("HH:mm")),
           $("<td>").text(tMinutesTillTrain)
         );
       
